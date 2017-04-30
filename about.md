@@ -5,7 +5,7 @@ permalink: /about/
 ---
 
 ### Education Background
-Mannes School of Music - The New School, Professional Study, (2017 - )
+Mannes School of Music - The New School, Professional Study, (2017 - )  
 Manhattan School of Music, Master Degree, (2015 - 2017)  
 Central Conservatory of Music, Bachelor Degree, (2011 - 2015)  
 Affiliated High School of China Conservatory of Music, Middle school, (2005 - 2011)  
