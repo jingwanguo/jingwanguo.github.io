@@ -48,6 +48,11 @@
 
     {% include analytics.html %}
     <script src="https://cdn.jsdelivr.net/npm/bubbly-bg@0.2.2/dist/bubbly-bg.js"></script>
-    <script>bubbly();</script>
+    <script>bubbly({
+    colorStart: "#4c004c",
+    colorStop: "#1a001a",
+    bubbleFunc: () => `hsla(${Math.random() * 360}, 100%, 50%, ${Math.random() * 0.25})`
+    });
+    </script>
   </body>
 </html>
