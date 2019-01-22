@@ -3,8 +3,12 @@
  </head>
  <body>
   A4 = <input type="text" name="beat" id="A4" size=4 value="442">Hz
+  <br>
   <button onclick="play(442)">A4</button>
 <script type="text/javascript">
+    var context=new AudioContext()
+    var o=null
+    var g=null
     function play(frequency){
         o=context.createOscillator()
         g=context.createGain()
