@@ -11,6 +11,8 @@
       <button onclick="play(-2)">G4</button>
        <button onclick="play(0)">A4</button>
          <button onclick="play(2)">B4</button>
+  <br>
+  Auto stop after 10s.
 <script type="text/javascript">
     var step=1.0594630943592952645618252949463
     var context=new AudioContext()
@@ -40,5 +42,14 @@
         },10000)
     }
 </script>
+<script src="https://cdn.jsdelivr.net/npm/bubbly-bg@1.0.0/dist/bubbly-bg.js"></script>
+    <script>bubbly({
+    colorStart: "#fff4e6",
+    colorStop: "#ffe9e4",
+    blur: 1,
+    compose: "source-over",
+    bubbleFunc: () => `hsla(${Math.random() * 50}, 100%, 50%, .3)`
+});
+    </script>
  </body>
 </html>
