@@ -2,22 +2,42 @@
  <head>
  </head>
  <body>
-  A4 = <input type="text" name="beat" id="A4" size=4 value="442">Hz
+  A4 = <input type="text" name="beat" id="A4" size=3 value="442">Hz
   <br>
-  <button onclick="play(442)">A4</button>
+  <button onclick="play(-9)">C4</button>
+   <button onclick="play(-7)">D4</button>
+    <button onclick="play(-5)">E4</button>
+     <button onclick="play(-4)">F4</button>
+      <button onclick="play(-2)">G4</button>
+       <button onclick="play(0)">A4</button>
+         <button onclick="play(2)">B4</button>
 <script type="text/javascript">
+    var step=1.0594630943592952645618252949463
     var context=new AudioContext()
     var o=null
     var g=null
-    function play(frequency){
-        o=context.createOscillator()
-        g=context.createGain()
-        o.type='sine'
-        o.connect(g)
-        o.frequency.value=frequency
-        g.connect(context.destination)
-        o.start(0)
-        g.gain.exponentialRampToValueAtTime(0.00001,context.currentTime+5)
+    var stopTimer=null
+    function play(step_cnt){
+        frequency = document.getElementById('A4').value * Math.pow(step,step_cnt)
+        console.log(frequency)
+        if (!g){
+            o=context.createOscillator()
+            g=context.createGain()
+            o.type='sine'
+            o.connect(g)
+            o.frequency.value=frequency
+            g.connect(context.destination)
+            o.start(0)
+        }else{
+            o.frequency.value=frequency
+            g.gain.exponentialRampToValueAtTime(1,context.currentTime+0.1)
+        }
+        if (stopTimer){
+            clearTimeout(stopTimer)
+        }
+        stopTimer = setTimeout(function(){
+            g.gain.exponentialRampToValueAtTime(0.000001,context.currentTime+1)
+        },10000)
     }
 </script>
  </body>
