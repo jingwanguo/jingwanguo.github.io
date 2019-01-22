@@ -1,0 +1,124 @@
+<html>
+ <head>
+   <style>
+     body { margin:0;  }
+     svg {
+       display:block; position:absolute;
+       top:0%; left:0%; width:100%; height:100%;
+     }
+   </style>    
+ </head>
+ <body>
+  <p id="p1">Hello World!</p>
+  <button onclick="connectPuck()">Connect/discon Puckjs</button>
+  <br><br>
+  Metronome <input type="text" name="beat" id="beat" size=5 value="60">/min <button onclick="set_metronome()">Start</button>
+  <br><br>
+  <textarea id="text1" rows="8" cols="80">
+  </textarea>
+  <br>
+  <button onclick="connection.write('E.getBattery()\n')">E.getBattery()</button>
+   <button onclick="connection.write('E.getAnalogVRef()\n')">E.getAnalogVRef()</button>
+    <button onclick="connection.write('E.getTemperature()\n')">E.getTemperature()</button>
+     <button onclick="connection.write('Puck.light()\n')">Puck.light()</button>
+  <br><br>
+  <button onclick="connection.write('LED1.write(1)\n')">Led-R 1</button>
+   <button onclick="connection.write('LED1.write(0)\n')">Led-R 0</button>
+    <button onclick="connection.write('LED2.write(1)\n')">Led-G 1</button>
+     <button onclick="connection.write('LED2.write(0)\n')">Led-G 0</button>
+      <button onclick="connection.write('LED3.write(1)\n')">Led-B 1</button>
+       <button onclick="connection.write('LED3.write(0)\n')">Led-B 0</button>
+  <br><br>
+  <button onclick="connection.write('BTN.read()\n')">BTN.read()</button>
+   <button onclick="connection.write('Puck.mag()\n')">Puck.mag()</button>
+    <button onclick="connection.write('Puck.capSense()\n')">Puck.capSense()</button>
+  <br><br>
+  <button onclick="connection.write('[analogRead(D5),analogRead(D4),analogRead(D3)]\n')">analogRead D5,D4,D3(RGB)</button>
+   <button onclick="connection.write('[analogRead(D2),analogRead(D28),analogRead(D29),analogRead(D30),analogRead(D31)]\n')">analogRead D2,28,29,30,31</button>
+  <br><br>
+  <button onclick="connection.write('reset()\n')">reset()</button>
+   <button onclick="connection.write('E.reboot()\n')">E.reboot()</button>
+  <br><br>
+  <textarea id="text_code" rows="4" cols="60">LED1.write(1)</textarea>
+  <br>
+  <button onclick="runCode()">Run code</button>
+  <script src="https://www.puck-js.com/puck.js"></script>
+  <script type="text/javascript">
+ //E.getBattery()
+//E.getAnalogVRef()
+//E.getTemperature()
+
+    // Get the actual curve inside the SVG. You could make differemt
+    // parts of a more complex SVG do different things...
+    //var path = document.getElementsByTagName('path')[0];
+    // Make sure your mouse cursor turns into a hand when over it, and gray it out
+    
+
+    // Called when we get a line of data - updates the light color
+    function onLine(v) {
+      //console.log("Received: "+JSON.stringify(v));
+      var text1 = document.getElementById("text1")
+      text1.innerHTML += v;
+      text1.scrollTop = text1.scrollHeight
+    }
+
+    // When clicked, connect or disconnect
+    var connection;
+    function connectPuck() {
+      console.log("connectPuck()");
+      if (connection) {
+        connection.close();
+        document.getElementById("p1").innerHTML = "dis-connected!";
+        connection = undefined;
+        return;
+      }
+      Puck.connect(function(c) {
+        if (!c) {
+          document.getElementById("p1").innerHTML = "dis-connected!";
+          return;
+        }
+        connection = c;
+        // Handle the data we get back, and call 'onLine'
+        // whenever we get a line
+        var buf = "";
+        connection.on("data", function(d) {
+          buf += d;
+          var i = buf.indexOf("\n");
+          while (i>=0) {
+            /*var v = buf.substr(0,i)
+            if (v.endsWith("\r")){
+              v = v.slice(0, -1);
+            }*/
+            onLine(buf.substr(0,i+1));
+            buf = buf.substr(i+1);
+            i = buf.indexOf("\n");
+          }
+        });
+        connection.write("NRF.on('disconnect',function(){digitalPulse(LED1,1,[10,100,10,100,10]);setTimeout(function(){reset()},1000)});\n",function(){
+          document.getElementById("p1").innerHTML = "connected!";
+        });
+        // First, reset Puck.js
+        /*connection.write("reset();\n", function() {
+          // Wait for it to reset itself
+          setTimeout(function() {
+            // Now tell it to write data on the current light level to Bluetooth
+            // 10 times a second. Also ensure that when disconnected, Puck.js
+            // resets so the setInterval doesn't keep draining battery.
+            connection.write("setInterval(function(){Bluetooth.println(Puck.light());},500);NRF.on('disconnect', function() {reset()});\n",
+              function() { console.log("Ready..."); });
+          }, 1500);
+        });*/
+      });
+    }
+    function runCode() {
+      var code = document.getElementById("text_code").value;
+      connection.write(code+'\n')
+    }
+    function set_metronome(){
+      var feq = document.getElementById("beat").value;
+      feq = 60*1000/feq
+      connection.write('try{clearInterval(beat)}catch(e){}beat = setInterval(function(){digitalPulse(LED1,1,1);digitalPulse(LED2,1,1);digitalPulse(LED3,1,1)},'+feq+')\n')
+    }
+  </script>
+ </body>
+</html>
