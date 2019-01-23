@@ -1,47 +1,79 @@
 <html>
  <head>
+  <title>Oscillator</title>
+  <script src="https://tonejs.github.io/build/Tone.js"></script>
  </head>
- <body>
-  A4 = <input type="text" name="beat" id="A4" size=3 value="442">Hz
+ <style>
+        body,
+        input,
+        select,
+        button {
+         font-family: Arial,Helvetica,sans-serif;
+         font-size: 64px;
+        }
+    </style>
+ <body style="max-width: 1000px">
+  A4 = <input type="text" name="beat" id="Afeq" size=1 value="442">Hz <button class="button" onclick="document.getElementById('Afeq').value=442">442</button> <button class="button" onclick="document.getElementById('Afeq').value=440">440</button>
   <br>
-  <button onclick="play(-9)">C4</button>
-   <button onclick="play(-7)">D4</button>
-    <button onclick="play(-5)">E4</button>
-     <button onclick="play(-4)">F4</button>
-      <button onclick="play(-2)">G4</button>
-       <button onclick="play(0)">A4</button>
-         <button onclick="play(2)">B4</button>
+  <button class="button" onclick="play(-9)">C&nbsp;</button>
+   <button class="button" onclick="play(-8)">C#</button>
+    <button class="button" onclick="play(-7)">D&nbsp;</button>
+     <button class="button" onclick="play(-6)">Eb</button>
+      <button class="button" onclick="play(-5)">E&nbsp;</button>
+       <button class="button" onclick="play(-4)">F&nbsp;</button>
+        <button class="button" onclick="play(-3)">F#</button>
+  <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <button class="button" onclick="play(-2)">G&nbsp;</button>
+   <button class="button" onclick="play(-1)">G#</button>
+    <button class="button" onclick="play(0)">A&nbsp;</button>
+     <button class="button" onclick="play(1)">Bb</button>
+      <button class="button" onclick="play(2)">B&nbsp;</button>
   <br>
-  Auto stop after 10s.
+  Octv.=<input type="text" name="beat" id="octv" size=1 value="4"> <button class="button" onclick="document.getElementById('octv').value-=1">lower</button> <button class="button" onclick="document.getElementById('octv').value= parseInt(document.getElementById('octv').value)+1">higher</button>
+  <br>
+  <button onclick="stop(0.5)">Stop</button>
 <script type="text/javascript">
+    var synth = new Tone.Synth({
+        "oscillator" : {
+          "type" : "amtriangle",
+          "harmonicity" : 0.5,
+          "modulationType" : "sine"
+        },
+        "envelope" : {
+          "attackCurve" : "exponential",
+          "attack" : 0.05,
+          "decay" : 0.2,
+          "sustain" : 1,
+          "release" : 0.05,
+        },
+        "portamento" : 0.05
+      }).toMaster();
     var step=1.0594630943592952645618252949463
-    var context=new AudioContext()
-    var o=null
-    var g=null
     var stopTimer=null
+    var isPlaying=0
     function play(step_cnt){
-        frequency = document.getElementById('A4').value * Math.pow(step,step_cnt)
+        step_cnt += 12*(document.getElementById('octv').value-4)
+        frequency = document.getElementById('Afeq').value * Math.pow(step,step_cnt)
         console.log(frequency)
-        if (!g){
-            o=context.createOscillator()
-            g=context.createGain()
-            o.type='sine'
-            o.connect(g)
-            o.frequency.value=frequency
-            g.connect(context.destination)
-            o.start(0)
+        synth.setNote(frequency)
+        if (isPlaying){
+            synth.triggerRelease()
+            setTimeout(function(){
+                synth.triggerAttack(frequency)
+            },52)
         }else{
-            o.frequency.value=frequency
-            g.gain.exponentialRampToValueAtTime(1,context.currentTime+0.1)
+            synth.triggerAttack(frequency)
         }
-        if (stopTimer){
-            clearTimeout(stopTimer)
+        isPlaying = 1
+    }
+    function stop(delay){
+        if (isPlaying){
+            synth.triggerRelease()
         }
-        stopTimer = setTimeout(function(){
-            g.gain.exponentialRampToValueAtTime(0.000001,context.currentTime+1)
-        },10000)
+        isPlaying = 0
     }
 </script>
+<!--
 <script src="https://cdn.jsdelivr.net/npm/bubbly-bg@1.0.0/dist/bubbly-bg.js"></script>
     <script>bubbly({
     colorStart: "#fff4e6",
@@ -51,5 +83,13 @@
     bubbleFunc: () => `hsla(${Math.random() * 50}, 100%, 50%, .3)`
 });
     </script>
+
+<div class="btn-group" style="max-width: 800px">
+  <button class="button" style="width:24%">Apple</button>
+  <button class="button" style="width:24%">Samsung</button>
+  <button class="button" style="width:24%">Sony</button>
+  <button class="button" style="width:24%">HTC</button>
+</div>
+-->
  </body>
 </html>
