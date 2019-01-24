@@ -13,7 +13,7 @@
         }
     </style>
  <body style="max-width: 1000px">
-  A4 = <input type="text" name="beat" id="Afeq" size=1 value="442">Hz <button class="button" onclick="document.getElementById('Afeq').value=442">442</button> <button class="button" onclick="document.getElementById('Afeq').value=440">440</button>
+  A4 = <input type="text" name="beat" id="Afeq" size=3 value="442">Hz <button class="button" onclick="document.getElementById('Afeq').value=442">442</button> <button class="button" onclick="document.getElementById('Afeq').value=440">440</button>
   <br>
   <button class="button" onclick="play(-9)">C&nbsp;</button>
    <button class="button" onclick="play(-8)">C#</button>
@@ -35,7 +35,7 @@
 <script type="text/javascript">
     var synth = new Tone.Synth({
         "oscillator" : {
-          "type" : "amtriangle",
+          "type" : "sine",
           "harmonicity" : 0.5,
           "modulationType" : "sine"
         },
