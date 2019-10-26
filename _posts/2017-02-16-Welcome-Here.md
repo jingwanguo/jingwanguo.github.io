@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Welcome Here
+title: Hello There!
 ---
 
-Welcome Here
+Hello There! 
 
 ![an image alt text]({{ site.baseurl }}/images/bass%20bear.jpg "an image title")
