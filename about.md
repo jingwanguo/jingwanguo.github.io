@@ -5,16 +5,17 @@ permalink: /about/
 ---
 
 ### Education Background
-Mannes School of Music - The New School, Professional Study, (2017 - )  
+Mannes School of Music - The New School, Professional Study, (2017 - 2019)  
 Manhattan School of Music, Master Degree, (2015 - 2017)  
 Central Conservatory of Music, Bachelor Degree, (2011 - 2015)  
 Affiliated High School of China Conservatory of Music, Middle school, (2005 - 2011)  
  
-### Advisors
-David Grossman 2015 - 2017 (Faculty member of MSM)  
+### Teacher
+David Grossman 2015 - 2019 (Faculty member of Manhattan School of Music, Mannes School of Music)  
 Dongwen Shen 2005 - 2015 (Professor at Central conservatory of Music)  
  
 ### Performance Experience
+Mannes Orchestra, Principal, (2017 - 2019)
 MSM Symphony Orchestra, member, (2015 - 2016)  
 MSM Chamber Sinfonia, member, (2016)  
 China youth Orchestra, principle double bass, (2012 - 2014)  
